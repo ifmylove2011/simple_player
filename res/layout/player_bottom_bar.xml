@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_50"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/ibtn_play_or_pause"
+        android:layout_width="@dimen/dimen_30"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dimen_5"
+        android:background="@drawable/ibtn_play"/>
+
+    <TextView
+        android:id="@+id/tv_cur_pos"
+        android:layout_width="@dimen/dimen_40"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_gravity="center_vertical"
+        />
+
+    <SeekBar
+        android:id="@+id/seb_cur_pos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dimen_5"
+        android:layout_weight="1"
+        android:indeterminateDrawable="@drawable/player_seekbar_layer"
+        android:max="1000"
+        android:progressDrawable="@drawable/player_seekbar_layer"/>
+
+    <TextView
+        android:id="@+id/tv_final_pos"
+        android:layout_width="@dimen/dimen_40"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_gravity="center_vertical"
+        />
+
+    <ImageButton
+        android:id="@+id/ibtn_list"
+        android:layout_width="@dimen/dimen_30"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/dimen_5"
+        android:background="@drawable/ibtn_list"/>
+</LinearLayout>

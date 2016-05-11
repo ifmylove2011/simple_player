@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <include
+        android:id="@+id/player_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/player_loading_layout" />
+
+    <include
+        android:id="@+id/player_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/player_error_layout" />
+
+    <ImageView
+        android:id="@+id/img_player_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_player_center"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/dimen_10"
+        layout="@layout/player_title_bar" />
+
+    <include
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dimen_10"
+        layout="@layout/player_bottom_bar" />
+
+</RelativeLayout>
