@@ -1,5 +1,6 @@
 package com.xter.player.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -62,6 +63,7 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 	}
 
 	public void setVideoPath(String path) {
+		LogUtils.d(path);
 		mUri = Uri.parse(path);
 		mPath = path;
 		openVideo();
@@ -212,7 +214,7 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 
 	@Override
 	public int getDuration() {
-		if(mPlayer==null)
+		if (mPlayer == null)
 			return 0;
 		if (mDuration != mPlayer.getDuration()) {
 			return mDuration;

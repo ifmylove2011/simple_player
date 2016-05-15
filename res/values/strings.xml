@@ -3,10 +3,12 @@
 
     <string name="app_name">Base</string>
 
-   <string name="hint_back">返回</string>
+    <string name="hint_back">返回</string>
 
     <string name="tv_loading">加载中...</string>
 
     <string name="tv_error">出错了！</string>
+
+    <string name="tv_local_video">本地视频</string>
 
 </resources>

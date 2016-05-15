@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xter.player.VideoActivity">
+
+    <com.xter.player.view.PlayerView
+        android:id="@+id/sur_player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.xter.player.view.PlayerController
+        android:id="@+id/fra_player_ctr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

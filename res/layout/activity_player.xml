@@ -1,17 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="${relativePackage}.${activityClass}" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.xter.player.PlayerActivity">
 
-    <com.xter.player.view.PlayerView
-        android:id="@+id/sur_player_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-    <com.xter.player.view.PlayerController
-        android:id="@+id/fra_player_ctr"
+    <FrameLayout
+        android:id="@+id/media_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </RelativeLayout>
