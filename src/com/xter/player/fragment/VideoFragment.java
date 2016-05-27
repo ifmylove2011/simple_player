@@ -1,21 +1,24 @@
 package com.xter.player.fragment;
 
 
-import android.app.Fragment;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import java.util.List;
 
 import com.xter.player.R;
 import com.xter.player.VideoActivity;
 import com.xter.player.adapter.LocalVideosAdapter;
 import com.xter.player.model.Video;
+import com.xter.player.view.VolumeView;
 
-import java.util.List;
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,9 +26,11 @@ import java.util.List;
 public class VideoFragment extends Fragment {
 
 	private ListView lvLocalVideos;
+	private LocalVideosAdapter localVideosAdapter;
+	private SwipeRefreshLayout srlLocalVideos;
 
 	private List<Video> videos;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,11 +48,24 @@ public class VideoFragment extends Fragment {
 	}
 
 	protected void initLayout(View view) {
+		srlLocalVideos = (SwipeRefreshLayout) view.findViewById(R.id.srl_local_videos);
+		
 		lvLocalVideos = (ListView) view.findViewById(R.id.lv_local_videos);
 	}
 
 	protected void initData() {
-		lvLocalVideos.setAdapter(new LocalVideosAdapter(getActivity(), videos));
+//		srlLocalVideos.setOnRefreshListener(new OnRefreshListener() {
+//
+//			@Override
+//			public void onRefresh() {
+//				videos.add(new Video(22,"a","aa"));
+//				localVideosAdapter.notifyDataSetChanged();
+//				srlLocalVideos.setRefreshing(false);
+//			}
+//		});
+//
+		localVideosAdapter = new LocalVideosAdapter(getActivity(), videos);
+		lvLocalVideos.setAdapter(localVideosAdapter);
 		lvLocalVideos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -56,6 +74,7 @@ public class VideoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+		localVideosAdapter.notifyDataSetChanged();
 	}
 
 

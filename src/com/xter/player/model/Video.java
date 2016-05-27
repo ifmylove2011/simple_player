@@ -109,6 +109,12 @@ public class Video implements Parcelable {
 
 	public Video() {
 	}
+	
+	public Video(long id,String name,String path){
+		this.id = id;
+		this.name = name;
+		this.path = path;
+	}
 
 	protected Video(Parcel in) {
 		this.id = in.readLong();

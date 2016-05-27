@@ -19,7 +19,7 @@ public class PlayHistoryManager extends PlayDBHelper {
 		db = new PlayDBHelper(context).getWritableDatabase();
 	}
 
-	public void add(PlayHistory ph) {
+	public void insert(PlayHistory ph) {
 		db.beginTransaction();
 		try {
 			db.execSQL("INSERT INTO play_history VALUES(null,?,?,?)",
@@ -28,6 +28,11 @@ public class PlayHistoryManager extends PlayDBHelper {
 		} finally {
 			db.endTransaction();
 		}
+//		ContentValues cv = new ContentValues();
+//		cv.put("movie_name", ph.getMovieName());
+//		cv.put("movie_uri", ph.getMovieUri());
+//		cv.put("movie_lastest_date", ph.getMovieLastestDate());
+//		db.insert("play_history", null, cv);
 	}
 
 	public void update(PlayHistory ph) {

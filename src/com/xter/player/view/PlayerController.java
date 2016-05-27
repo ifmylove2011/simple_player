@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,8 +29,8 @@ public class PlayerController extends FrameLayout {
 	private LinearLayout llPlayerLoadingLayout;
 	private LinearLayout llPlayerErrorLayout;
 	private ImageView imgCenterPlayPause;
-	private TextView tvPlayerLoading;
-	private TextView tvPlayerError;
+//	private TextView tvPlayerLoading;
+//	private TextView tvPlayerError;
 	private ProgressBar pgbPlayerLoading;
 
 	/**
@@ -58,6 +57,8 @@ public class PlayerController extends FrameLayout {
 	public static final int SHOW_LOADING = 4;
 	public static final int SHOW_ERROR = 5;
 	public static final int HIDE_LOADING = 6;
+	public static final int SWITCH_PLAY_PAUSE_STATE = 7;
+	public static final int SHOW_REFRESH = 8;
 
 	public PlayerController(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -78,26 +79,32 @@ public class PlayerController extends FrameLayout {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case SHOW_PROGRESS:
-				int pos = setShowProgress();
-				if (playerControl.isPlaying())
-					sendMessageDelayed(obtainMessage(SHOW_PROGRESS), 1000 - (pos % 1000));
-				break;
-			case SHOW_BAR:
-				showBar();
-				break;
-			case HIDE_BAR:
-				hideBar();
-				break;
-			case SHOW_LOADING:
-				showLoadingLayout();
-				break;
-			case HIDE_LOADING:
-				hideLoadingLayout();
-				break;
-			case SHOW_ERROR:
-				showErrorLayout();
-				break;
+				case SHOW_PROGRESS:
+					int pos = setShowProgress();
+					if (playerControl.isPlaying())
+						sendMessageDelayed(obtainMessage(SHOW_PROGRESS), 1000 - (pos % 1000));
+					break;
+				case SHOW_BAR:
+					showBar();
+					break;
+				case HIDE_BAR:
+					hideBar();
+					break;
+				case SHOW_LOADING:
+					showLoadingLayout();
+					break;
+				case HIDE_LOADING:
+					hideLoadingLayout();
+					break;
+				case SHOW_ERROR:
+					showErrorLayout();
+					break;
+				case SWITCH_PLAY_PAUSE_STATE:
+					updateControlBar();
+					break;
+				case SHOW_REFRESH:
+					showCenterRefresh();
+					break;
 			}
 			super.handleMessage(msg);
 		}
@@ -114,8 +121,8 @@ public class PlayerController extends FrameLayout {
 		llPlayerLoadingLayout = (LinearLayout) rootView.findViewById(R.id.player_loading_layout);
 		llPlayerErrorLayout = (LinearLayout) rootView.findViewById(R.id.player_error_layout);
 		imgCenterPlayPause = (ImageView) rootView.findViewById(R.id.img_player_center);
-		tvPlayerLoading = (TextView) rootView.findViewById(R.id.tv_loading);
-		tvPlayerError = (TextView) rootView.findViewById(R.id.tv_error);
+//		tvPlayerLoading = (TextView) rootView.findViewById(R.id.tv_loading);
+//		tvPlayerError = (TextView) rootView.findViewById(R.id.tv_error);
 		pgbPlayerLoading = (ProgressBar) rootView.findViewById(R.id.pgb_loading);
 
 		llPlayerTitleBar = (LinearLayout) rootView.findViewById(R.id.title_bar);
@@ -168,11 +175,12 @@ public class PlayerController extends FrameLayout {
 		mHandler.removeMessages(SHOW_PROGRESS);
 		mHandler.sendMessage(mHandler.obtainMessage(SHOW_PROGRESS));
 	}
-
+	
 	private OnClickListener onPlayPauseClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
+			LogUtils.i("play or pause");
 			if (playerControl != null)
 				switchPlayPause();
 		}
@@ -236,6 +244,7 @@ public class PlayerController extends FrameLayout {
 	}
 
 	public void switchBar() {
+		LogUtils.i("switch bar");
 		mHandler.removeMessages(SHOW_BAR);
 		mHandler.removeMessages(HIDE_BAR);
 		if (isBarShowing()) {
@@ -251,7 +260,7 @@ public class PlayerController extends FrameLayout {
 		switchBar();
 	}
 
-	public void hideBar() {
+	private void hideBar() {
 		llPlayerTitleBar.setVisibility(GONE);
 		llPlayerBottomBar.setVisibility(GONE);
 	}
@@ -260,16 +269,21 @@ public class PlayerController extends FrameLayout {
 		return llPlayerTitleBar.isShown() && llPlayerBottomBar.isShown();
 	}
 
-	protected void showErrorLayout() {
+	private void showErrorLayout() {
 		llPlayerErrorLayout.setVisibility(VISIBLE);
 	}
 
-	protected void showLoadingLayout() {
+	private void showLoadingLayout() {
 		llPlayerLoadingLayout.setVisibility(VISIBLE);
 	}
-	
-	protected void hideLoadingLayout(){
+
+	private void hideLoadingLayout() {
 		llPlayerLoadingLayout.setVisibility(GONE);
+	}
+	
+	private void showCenterRefresh(){
+		imgCenterPlayPause.setVisibility(VISIBLE);
+		imgCenterPlayPause.setImageResource(R.drawable.img_refresh);
 	}
 
 	public void showError() {
@@ -279,9 +293,25 @@ public class PlayerController extends FrameLayout {
 	public void showLoading() {
 		mHandler.sendEmptyMessage(SHOW_LOADING);
 	}
-	
-	public void hideLoading(){
+
+	public void hideLoading() {
 		mHandler.sendEmptyMessage(HIDE_LOADING);
+	}
+
+	public void switchPlayPauseState(){
+		mHandler.sendMessage(mHandler.obtainMessage(SWITCH_PLAY_PAUSE_STATE));
+	}
+
+	public void showBarState(){
+		mHandler.sendMessage(mHandler.obtainMessage(SHOW_BAR));
+	}
+	
+	public void showRefresh(){
+		mHandler.sendMessage(mHandler.obtainMessage(SHOW_REFRESH));
+	}
+
+	public void removeCallback() {
+		mHandler.removeMessages(SHOW_PROGRESS);
 	}
 
 	@Override

@@ -4,4 +4,6 @@
     <item name="btn_ok" type="id"/>
     <item name="btn_cancal" type="id"/>
     
+     <item name="imageloader_uri" type="id"/>
+     <item name="imageloader_sim_uri" type="id"/>
 </resources>

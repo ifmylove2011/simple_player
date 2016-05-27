@@ -1,27 +1,31 @@
 package com.xter.player.view;
 
-import android.app.Activity;
+import java.io.IOException;
+
+import com.xter.player.util.LogUtils;
+import com.xter.player.util.SysUtils;
+import com.xter.player.view.PlayerController.PlayerControl;
+
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
-import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-import com.xter.player.util.LogUtils;
-import com.xter.player.util.SysUtils;
-import com.xter.player.view.PlayerController.PlayerControl;
-
-import java.io.IOException;
-
 public class PlayerView extends SurfaceView implements Callback, PlayerControl {
+
+	public interface IOrientationDetector {
+		void onOrientationChanged(boolean reqLandscape);
+	}
 
 	public static final int STATE_PLAYING = 1;
 	public static final int STATE_PAUSED = 2;
@@ -35,6 +39,8 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 	private Context mContext;
 	private SurfaceHolder mHolder;
 	private PlayerController playerController;
+
+	private IOrientationDetector detector;
 
 	private int mVideoWidth;
 	private int mVideoHeight;
@@ -81,6 +87,7 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 			mPlayer.setOnErrorListener(onErrorListener);
 			mPlayer.setOnCompletionListener(onCompletionListener);
 			mPlayer.setOnInfoListener(onInfoListener);
+			mPlayer.setOnVideoSizeChangedListener(onVideoSizeChangedListener);
 			mPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
 
 			mPlayer.setDataSource(mPath);
@@ -110,6 +117,27 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 			mDuration = mp.getDuration();
 			playerController.initTvPos();
 			playerController.setTitle(SysUtils.getMovieTitle(mPath));
+			start();
+		}
+	};
+
+	private OnVideoSizeChangedListener onVideoSizeChangedListener = new OnVideoSizeChangedListener() {
+
+		@Override
+		public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+			if (width == 0 || height == 0) {
+				LogUtils.e("invalid palyer size");
+				return;
+			}
+			LogUtils.i("video size");
+
+			int wid = mp.getVideoWidth();
+			int heig = mp.getVideoHeight();
+
+			LogUtils.i("mp width:" + wid + ",mp height:" + heig);
+
+			detector.onOrientationChanged(wid > heig);
+
 		}
 	};
 
@@ -128,6 +156,7 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 		@Override
 		public void onCompletion(MediaPlayer mp) {
 			LogUtils.i("总时长" + mp.getDuration() / 1000 + "s 结束");
+			playerController.showRefresh();
 		}
 	};
 
@@ -173,7 +202,7 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+		LogUtils.i("sur width:" + width + ",sur height:" + height);
 	}
 
 	@Override
@@ -190,6 +219,10 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 		playerController.setPlayerControl(this);
 	}
 
+	public void setOrientationDetector(IOrientationDetector detector) {
+		this.detector = detector;
+	}
+
 	protected boolean inNormalState() {
 		return mPlayerState == STATE_PAUSED || mPlayerState == STATE_PREPARED;
 	}
@@ -198,6 +231,8 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 	public void start() {
 		mPlayer.start();
 		mPlayerState = STATE_PLAYING;
+		playerController.switchPlayPauseState();
+		playerController.showBarState();
 	}
 
 	@Override
@@ -246,7 +281,8 @@ public class PlayerView extends SurfaceView implements Callback, PlayerControl {
 
 	@Override
 	public void close() {
-
+		if (playerController != null)
+			playerController.removeCallback();
 	}
 
 }
