@@ -36,7 +36,6 @@ public class PlayerController extends FrameLayout {
 	/**
 	 * 界面上方的布局--标题栏
 	 */
-	private LinearLayout llPlayerTitleBar;
 	private TextView tvPlayerTitle;
 
 	/**
@@ -125,7 +124,6 @@ public class PlayerController extends FrameLayout {
 //		tvPlayerError = (TextView) rootView.findViewById(R.id.tv_error);
 		pgbPlayerLoading = (ProgressBar) rootView.findViewById(R.id.pgb_loading);
 
-		llPlayerTitleBar = (LinearLayout) rootView.findViewById(R.id.title_bar);
 		tvPlayerTitle = (TextView) rootView.findViewById(R.id.tv_playing_title);
 
 		llPlayerBottomBar = (LinearLayout) rootView.findViewById(R.id.bottom_bar);
@@ -255,18 +253,18 @@ public class PlayerController extends FrameLayout {
 	}
 
 	public void showBar() {
-		llPlayerTitleBar.setVisibility(VISIBLE);
+		tvPlayerTitle.setVisibility(VISIBLE);
 		llPlayerBottomBar.setVisibility(VISIBLE);
 		switchBar();
 	}
 
 	private void hideBar() {
-		llPlayerTitleBar.setVisibility(GONE);
+		tvPlayerTitle.setVisibility(GONE);
 		llPlayerBottomBar.setVisibility(GONE);
 	}
 
 	public boolean isBarShowing() {
-		return llPlayerTitleBar.isShown() && llPlayerBottomBar.isShown();
+		return tvPlayerTitle.isShown() && llPlayerBottomBar.isShown();
 	}
 
 	private void showErrorLayout() {

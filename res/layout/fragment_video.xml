@@ -25,17 +25,10 @@
             android:layout_marginTop="@dimen/dimen_10" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <com.xter.player.view.CustomVolumControlBar
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_test"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        zhy:bg="@drawable/img_player_center"
-        zhy:circleWidth="10dp"
-        zhy:dotCount="8"
-        zhy:firstColor="#ADC6E5"
-        zhy:secondColor="#0362DB"
-        zhy:splitSize="25" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

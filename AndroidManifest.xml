@@ -30,6 +30,7 @@
         </activity>
         <activity
             android:name=".VideoActivity"
+            android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
